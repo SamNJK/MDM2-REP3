@@ -48,12 +48,22 @@ def two_dimensional_random_walk(steps, start=(0, 0), grid_size=100):
     
     return x, y
 
-#def infection_probability(steps, num_infected):
-    #the probability funciton for an infection to occur
- #   return min(1, 0.5 +0.1 *num_infected)
-
 
 def simulate_multiple_walks(num_walks, steps, recovery_probability, base_inf_prob, grid_size=100):
+    """
+    This function simulates multiple random walks in a 2D grid, with the walkers having a chance of becoming infected 
+    when they are in the same position as an infected walker. If a walker becomes infected, they have a chance of recovering,
+    and once they recover they become immune to the infection. The simulation will stop if all walkers have been infected, or 
+    if there are no more infected walkers. The simulation will also stop if the number of steps reaches the maximum number of steps.
+    It keeps track of all the walkers for all the steps.
+    
+    num_walks = the number of total walkers in the model, including the initial infected walker
+    steps = the number of steps each walker will take
+    recovery_probability = the probability that a walker will recover at each step
+    base_inf_prob = the base infection probability, which is the probability that an infected walker will infect a healthy
+    walker if they are in the same position
+    grid_size = the size of the grid that the walkers will move in, is fixed at 100x100, as per the requirements
+    """
     # Set the initial infected walker
     initial_infected = random.randint(0, num_walks-1)
     initial_positions = []
@@ -116,6 +126,12 @@ def simulate_multiple_walks(num_walks, steps, recovery_probability, base_inf_pro
 
 
 def plot_initial_positions(initial_positions, initial_infected, grid_size):
+    """
+    Plot the initial positions of the walkers, with the infected walker in red and the healthy walkers in blue.
+    initial_positions = the initial positions of the walkers
+    initial_infected = the index of the initial infected walker
+    grid_size = the size of the grid that the walkers will move in, is fixed at 100x100, as per the requirements
+    """
     initial_x, initial_y = zip(*initial_positions)
 
     plt.figure(figsize=(5, 5))
@@ -132,6 +148,14 @@ def plot_initial_positions(initial_positions, initial_infected, grid_size):
 
 
 def plot_final_positions(final_positions, infected_walkers, recovered_walkers, grid_size):
+    """
+    Plotting the final positions of the model, with the final positions of the infected walkers in red, the final positions
+    of the walkers in blue, and the final positions of the recovered walkers in green.
+    final_positions = the final positions of the walkers
+    infected_walkers = the indices of the infected walkers
+    recovered_walkers = the indices of the recovered walkers
+    grid_size = the size of the grid that the walkers will move in, is fixed at 100x100, as per the requirements
+    """
     final_x, final_y = zip(*final_positions)
 
     plt.figure(figsize=(5, 5))
@@ -158,6 +182,15 @@ def plot_final_positions(final_positions, infected_walkers, recovered_walkers, g
     plt.show()
 
 def animate_positions(i, positions_at_each_step, infected_walkers_at_each_step, recovered_walkers_at_each_step, grid_size):
+    """
+    Making an animation of the results of the model, with the positions of the walkers at each step. Keep in mind that it does not save the animation.
+    So I will have to screen record it if I want to save it. Or come up with a way to save the animation
+    i = the current step
+    positions_at_each_step = the positions of the walkers at each step
+    infected_walkers_at_each_step = the indices of the infected walkers at each step
+    recovered_walkers_at_each_step = the indices of the recovered walkers at each step
+    grid_size = the size of the grid that the walkers will move in, is fixed at 100x100, as per the requirements
+    """
     plt.gca().clear()
     positions = positions_at_each_step[i]
     infected_walkers = infected_walkers_at_each_step[i]
@@ -177,7 +210,7 @@ def animate_positions(i, positions_at_each_step, infected_walkers_at_each_step, 
     # Set plot limits, labels, and title
     plt.xlim(0, grid_size)
     plt.ylim(0, grid_size)
-    plt.title('An infection spreading among a randomly moving population, where after a walker recovers they become immune')
+    plt.title(f'Step {i + 1}')
     plt.legend(bbox_to_anchor=(1.05, 1), loc='upper left')
     plt.subplots_adjust(right=0.7)
 
@@ -233,26 +266,23 @@ recovery_probability = the probability that a walker will recover at each step
 """
 # Parameters
 num_walks = 1000
-steps = 100  # Increase the number of steps
-#n = 10 #frequency of steps shown
+steps = 100 
 grid_size = 100
 base_inf_prob = 0.5
-recovery_probability = 0.001  # Define the recovery probability, e.g. 0.05 = 5% chance of recovery at each step
-
-#create the infection probability
+recovery_probability = 0.001
 
 
-# Simulate multiple walks and get initial and final positions
+#running simulate_multiple_walks
 positions_at_each_step, infected_walkers_at_each_step, recovered_walkers_at_each_step, initial_positions, final_positions, infected_walkers, initial_infected, recovered_walkers, stps = simulate_multiple_walks(num_walks, steps, recovery_probability, base_inf_prob, grid_size)
-print(stps)  # Print the number of steps taken
+print(stps)  #So i know whether it did run through all of the steps or not
 
 
 
-# Plot initial and final positions
+# Plot initial positions
 plot_initial_positions(initial_positions, initial_infected, grid_size)
 
 """
-#here i am trying to plot the animation of all the positions
+#here i am plotting the animation of all the positions over the steps
 """
 # Create a figure.
 fig = plt.figure()
@@ -270,6 +300,4 @@ plot_final_positions(final_positions, infected_walkers, recovered_walkers, grid_
 
 
 
-#can plot both of them in the same figure if needs be
-#plot_initial_final_positions(initial_positions, final_positions, infected_walkers, initial_infected, recovered_walkers, grid_size)
 #justifying my actions, why i did what i did, " i researched this so i did that"
