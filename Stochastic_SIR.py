@@ -1,7 +1,18 @@
+"""
+This code plots the deterministic and stochastic SIR models for infectious diseases.  With the
+use of the Gillespie algorithm, the stochastic model is simulated and compared to the deterministic
+model.  The deterministic model is simulated using the scipy odeint function.
+"""
+
 import numpy as np
 import matplotlib.pyplot as plt
 import random
 from scipy.integrate import odeint
+
+"""
+Initial conditions for the SIR model:
+S = Susceptible, I = Infected, R = Recovered, t = Time
+"""
 
 S = [999]
 I = [1]
@@ -103,6 +114,10 @@ ax1.set_ylabel("Susceptible")
 ax2.set_ylabel("Infected")
 ax3.set_ylabel("Recovered")
 ax3.set_xlabel("Time Steps")
+ax1.legend(["Stochastic SIR","Deterministic SIR"],loc="upper right")
+plt.suptitle("Deterministic vs Stochastic SIR Model")
+
+plt.show()
 ax1.legend(["Stochastic SIR","Deterministic SIR"],loc="upper right")
 plt.suptitle("Deterministic vs Stochastic SIR Model")
 
