@@ -6,7 +6,7 @@ from scipy.integrate import odeint
 S = [999]
 I = [1]
 R = [0]
-t = [500]
+t = [0]
 
 tend = 500
 beta = 0.04     # Infection Rate (1/beta = Infectious period)
