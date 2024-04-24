@@ -1,5 +1,6 @@
 """
-plotting the average infected, susceptible and recovered walkers for task 1 over n steps for n runs
+This code we run through task 1, plotting how the number of susceptible, infected and recovered walkers vary over steps( n_steps) and multiple simulations (n_runs).
+It then plots the averages after n runs of n steps.
 """
 
 import numpy as np
@@ -19,9 +20,12 @@ total_susceptible_counts = np.zeros(n_steps)
 total_recovered_counts = np.zeros(n_steps)
 
 for run in range(n_runs):
-
+    """
+    Looping through the requested number of runs
+    n_runs = number of runs
+    """
     if run % 100 == 0:
-            print(f'Step {run} of {n_runs}')
+        print(f'Step {run} of {n_runs}')
     # Reset the status and positions for each run
     status = np.zeros(n_individuals, dtype=int)
     status[0] = 1  # Initialize the first individual as infected
@@ -32,8 +36,12 @@ for run in range(n_runs):
     susceptible_counts = []
     recovered_counts = []
 
-    for _ in range(n_steps):
-
+    for _ in range(n_steps):    
+        """
+        Looping through the requested number of steps
+        n_steps = number of steps
+        """
+        
         if _ % 100 == 0:
             print(f'Step {_} of {n_steps}')
         # Random walk: Change the position of each individual randomly
@@ -42,6 +50,10 @@ for run in range(n_runs):
 
         # Infection process
         for i in range(n_individuals):
+            """
+            Going through each individual and checking if they are infected, ff they are infected, we check if they infect other individuals
+            n_individuals = number of individuals
+            """
             if status[i] == 1:  # For each infected individual
                 for j in range(n_individuals):
                     if i != j and status[j] == 0:
