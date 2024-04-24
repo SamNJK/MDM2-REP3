@@ -3,15 +3,15 @@ import matplotlib.pyplot as plt
 import random
 from scipy.integrate import odeint
 
-S = [90]
-I = [10]
+S = [999]
+I = [1]
 R = [0]
-t = [0]
+t = [500]
 
 tend = 500
-
 beta = 0.04     # Infection Rate (1/beta = Infectious period)
 gamma = 0.01    # Recovery Rate (1/gamma = Recovery period)
+
 """ 
     R number (R_0) = beta/gamma, for Covid this is ~2.63
     This is the expected number of new infections from a single infected person.
@@ -69,9 +69,9 @@ line2 = ax2.plot(t,I) # I
 line3 = ax3.plot(t,R) # R
 
 # Standard (deterministic) SIR ODE:
-t = np.linspace(0,tend, num=1000)
+t = np.linspace(0,tend, num=500)
 params = [beta,gamma]
-y0 = [100, 1, 0]
+y0 = [999, 1, 0]
 
 
 def sim(variables, t, params):
@@ -102,7 +102,8 @@ line3 = ax3.plot(t,y[:,2]) # R
 ax1.set_ylabel("Susceptible")
 ax2.set_ylabel("Infected")
 ax3.set_ylabel("Recovered")
-ax3.set_xlabel("Time (arbitrary units)")
+ax3.set_xlabel("Time Steps")
+ax1.legend(["Stochastic SIR","Deterministic SIR"],loc="upper right")
 plt.suptitle("Deterministic vs Stochastic SIR Model")
 
 plt.show()
