@@ -1,3 +1,7 @@
+"""
+This code plots the dynamics of the SIR model for infectious diseases.
+"""
+
 import numpy as np
 import matplotlib.pyplot as plt
 
