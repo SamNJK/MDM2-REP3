@@ -13,10 +13,10 @@ random
 
 # Task 1 & Task 2
 
-Running the Script
+Running the Script:
 No inputs are required to running the scripts. After running it will display the animation of the walkers' movement and plots of the initial and final position
 
-Understanding the Output
+Understanding the Output:
 The script generates an animation showing the movement of walkers on a grid. Walkers can be in one of three states:
 
 Healthy (blue)
@@ -26,7 +26,8 @@ The animation shows the movement of the walkers at each step, with their color i
 
 # plotting_averages
 
-Understanding the Output
+This codes runs with the task 1 conditions.
+Understanding the Output:
 The script generates a plot showing the average number of individuals in each state (susceptible, infected, recovered) over time. This plot provides an understanding of how the infection spreads and recedes in the population.
 
 Modifying the Simulation
@@ -36,18 +37,18 @@ You can modify the parameters of the simulation (such as the number of individua
 # Task 3 - SIR Models
 #SIR.py
 
-Understanding the Output
+Understanding the Output:
 The script generates a plot showing the number of individuals in each state (susceptible, infected, recovered) over time. This plot provides an understanding of how the infection spreads and recedes in the population according to the SIR model.
 
-Modifying the Simulation
+Modifying the Simulation:
 You can modify the parameters of the simulation (such as the total population, the initial number of infected individuals, the duration of the simulation, the infection rate, and the recovery rate) by changing the corresponding variables in the script.
 
 #Stochastic_SIR.py
 
-Understanding the Output
+Understanding the Output:
 The script generates a plot showing the number of individuals in each state (susceptible, infected, recovered) over time. This plot provides an understanding of how the infection spreads and recedes in the population according to the SIR model.
 
-Modifying the Simulation
+Modifying the Simulation:
 You can modify the parameters of the simulation (such as the total population, the initial number of infected individuals, the duration of the simulation, the infection rate, and the recovery rate) by changing the corresponding variables in the script.      
 
 
