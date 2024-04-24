@@ -1,11 +1,16 @@
 """
-everything works
 Generates n amount of walkers and simulates their movement in a 2D 100x100 grid. With all but one of the walkers
 starting off as healthy and one starting off as infected. The infected walker will infect any healthy walker if
 it comes into contact with them. The infected walker has a %p chance of infecting a healthy walker if they are
 in the same position. Each walker has a %r chance of recovering at each step. Once a walker recovers they become
 immune to the infection. The simulation will stop if all walkers have been infected or if there are no more infected
 walkers. The simulation will also stop if the number of steps reaches the maximum number of steps.
+
+** changes made for task 2:
+modified function(two_dimensional_random_walk) from task1.py to do task2 by modifying the action strategy. It now takes
+in two new variables: compliance rate & minimum distance. Allowing the model to factor in social distancing to help
+prevent the disease from spreading too quickly.
+
 """
 
 import random as random
@@ -29,6 +34,20 @@ def infection_probability(p, num_infected):
 
 
 def two_dimensional_random_walk(steps, start, grid_size, social_distancing=False, compliance_rate=1.0, min_distance=2):
+    """
+    Perform a two-dimensional random walk in a grid with periodic boundary conditions. The walker starts at a randomly 
+    chosen position in the grid and takes a step in a random direction at each time step. The walker can move up, down,
+    left, or right with equal probability. The walker's position is updated at each time step, and the function returns
+    the walker's position at each time step. When social distancing is enabled, every walker will avoid moving to a position
+    that is too close to another walker with a certain compliance rate. Each walker will also attempt to maintain a minimum 
+    distance from other walkers.
+    steps = the number of steps the walker will take
+    start = the starting position of the walker
+    grid_size = the size of the grid that the walker will move in
+    social_distancing = a boolean flag indicating whether social distancing is enabled
+    compliance_rate = the probability that a walker will comply with social distancing
+    min_distance = the minimum distance that a walker will maintain from other walkers
+    """
     x, y = [start[0]], [start[1]]
     for i in range(1, steps):
         directions = [(0, 1), (0, -1), (1, 0), (-1, 0)]
@@ -285,7 +304,6 @@ ani = animation.FuncAnimation(fig, animate_positions, frames=steps, fargs=(
 positions_at_each_step, infected_walkers_at_each_step, recovered_walkers_at_each_step, grid_size), repeat=False)
 # Display the animation.
 plt.show()
-# can do windows + alt + r to screen record the animation
 
 
 plot_final_positions(final_positions, infected_walkers, recovered_walkers, grid_size)
