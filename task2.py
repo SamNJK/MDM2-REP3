@@ -31,21 +31,20 @@ def infection_probability(p, num_infected):
 def two_dimensional_random_walk(steps, start, grid_size, social_distancing=False, compliance_rate=1.0, min_distance=2):
     x, y = [start[0]], [start[1]]
     for i in range(1, steps):
-        directions = [(0,1), (0,-1), (1,0), (-1,0)]
+        directions = [(0, 1), (0, -1), (1, 0), (-1, 0)]
         if social_distancing:
-            # Check each direction for compliance with social distancing rules
             new_directions = []
             for direction in directions:
                 new_x = (x[-1] + direction[0]) % grid_size
                 new_y = (y[-1] + direction[1]) % grid_size
-                # Check if this new position is too close to any other walker
+                # 检查这个新位置是否与任何其他行走者过于接近
                 too_close = any(
                     abs(new_x - other_x) <= min_distance and abs(new_y - other_y) <= min_distance
                     for other_x, other_y in zip(x, y)
                 )
                 if not too_close or random.random() > compliance_rate:
                     new_directions.append(direction)
-            # If there are no directions that adhere to social distancing, take the original direction
+            # 如果没有遵守社交距离的方向，采用原始方向
             direction = random.choice(new_directions) if new_directions else random.choice(directions)
         else:
             direction = random.choice(directions)
@@ -56,7 +55,8 @@ def two_dimensional_random_walk(steps, start, grid_size, social_distancing=False
 
 
 
-def simulate_multiple_walks(num_walks, steps, recovery_probability, base_inf_prob, grid_size=100):
+
+def simulate_multiple_walks(num_walks, steps, recovery_probability, base_inf_prob, grid_size=100, compliance_rate=1.0, min_distance=2):
     """
     This function simulates multiple random walks in a 2D grid, with the walkers having a chance of becoming infected
     when they are in the same position as an infected walker. If a walker becomes infected, they have a chance of recovering,
@@ -82,8 +82,7 @@ def simulate_multiple_walks(num_walks, steps, recovery_probability, base_inf_pro
     recovered_walkers_at_each_step = []
 
     # Create a list to hold the walkers' paths
-    paths = [two_dimensional_random_walk(steps, start=(random.randint(0, grid_size), random.randint(0, grid_size)),
-                                         grid_size=grid_size) for _ in range(num_walks)]
+    paths = [two_dimensional_random_walk(steps, start=(random.randint(0, grid_size), random.randint(0, grid_size)), grid_size=grid_size, social_distancing=True, compliance_rate=0.1, min_distance=1) for _ in range(num_walks)]
 
     # Check each step for all walkers
     for step in range(steps):
@@ -136,61 +135,41 @@ def simulate_multiple_walks(num_walks, steps, recovery_probability, base_inf_pro
 
 
 def plot_initial_positions(initial_positions, initial_infected, grid_size):
-    """
-    Plot the initial positions of the walkers, with the infected walker in red and the healthy walkers in blue.
-    initial_positions = the initial positions of the walkers
-    initial_infected = the index of the initial infected walker
-    grid_size = the size of the grid that the walkers will move in, is fixed at 100x100, as per the requirements
-    """
     initial_x, initial_y = zip(*initial_positions)
-
-    plt.figure(figsize=(5, 5))
+    plt.figure(figsize=(8, 6))  # 调整图形尺寸
     plt.scatter(initial_x, initial_y, color='blue', label='Initial Positions')
-    plt.scatter(initial_x[initial_infected], initial_y[initial_infected], color='red',
-                label='Infected Walker')  # Plot the infected walker
+    plt.scatter(initial_x[initial_infected], initial_y[initial_infected], color='red', label='Infected Walker')
     plt.title('Initial Positions')
     plt.xlabel('x')
     plt.ylabel('y')
     plt.xlim(0, grid_size)
     plt.ylim(0, grid_size)
-    plt.legend(bbox_to_anchor=(1.05, 1), loc='upper left')
-    plt.subplots_adjust(right=0.7)
+    plt.gca().set_aspect('equal', adjustable='box')
+    plt.legend(loc='upper right', bbox_to_anchor=(1, 1))  # 调整图例位置
+    plt.tight_layout()  # 使用自动布局
     plt.show()
 
-
 def plot_final_positions(final_positions, infected_walkers, recovered_walkers, grid_size):
-    """
-    Plotting the final positions of the model, with the final positions of the infected walkers in red, the final positions
-    of the walkers in blue, and the final positions of the recovered walkers in green.
-    final_positions = the final positions of the walkers
-    infected_walkers = the indices of the infected walkers
-    recovered_walkers = the indices of the recovered walkers
-    grid_size = the size of the grid that the walkers will move in, is fixed at 100x100, as per the requirements
-    """
     final_x, final_y = zip(*final_positions)
-
-    plt.figure(figsize=(5, 5))
+    plt.figure(figsize=(8, 6))  # 调整图形尺寸
     plt.scatter(final_x, final_y, color='blue', label='Final Positions')
-
-    # Create arrays for the x and y positions of the infected and recovered walkers
     infected_x = [final_x[walker] for walker in infected_walkers]
     infected_y = [final_y[walker] for walker in infected_walkers]
     recovered_x = [final_x[walker] for walker in recovered_walkers]
     recovered_y = [final_y[walker] for walker in recovered_walkers]
-
-    # Create a single scatter plot for all infected walkers and another for all recovered walkers
     plt.scatter(infected_x, infected_y, color='red', label='Infected Walkers')
     plt.scatter(recovered_x, recovered_y, color='green', label='Recovered Walkers')
-
     plt.title('Final Positions')
     plt.xlabel('x')
     plt.ylabel('y')
     plt.xlim(0, grid_size)
     plt.ylim(0, grid_size)
-    plt.legend(bbox_to_anchor=(1.05, 1), loc='upper left')
-    plt.subplots_adjust(right=0.7)
-
+    plt.gca().set_aspect('equal', adjustable='box')
+    plt.legend(loc='upper right', bbox_to_anchor=(1, 1))  # 调整图例位置
+    plt.tight_layout()  # 使用自动布局
     plt.show()
+
+
 
 
 def animate_positions(i, positions_at_each_step, infected_walkers_at_each_step, recovered_walkers_at_each_step,
@@ -281,7 +260,7 @@ recovery_probability = the probability that a walker will recover at each step
 """
 # Parameters
 num_walks = 1000
-steps = 100
+steps = 200
 grid_size = 100
 base_inf_prob = 0.5
 recovery_probability = 0.001
