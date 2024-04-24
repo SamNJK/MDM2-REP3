@@ -1,18 +1,7 @@
-"""
-This code plots the deterministic and stochastic SIR models for infectious diseases.  With the
-use of the Gillespie algorithm, the stochastic model is simulated and compared to the deterministic
-model.  The deterministic model is simulated using the scipy odeint function.
-"""
-
 import numpy as np
 import matplotlib.pyplot as plt
 import random
 from scipy.integrate import odeint
-
-"""
-Initial conditions for the SIR model:
-S = Susceptible, I = Infected, R = Recovered, t = Time
-"""
 
 S = [999]
 I = [1]
@@ -57,22 +46,19 @@ while t[-1] < tend and (S[-1] + I[-1] >= 1):
             I.append(I[-1] - 1)
             R.append(R[-1] + 1)    
 
-
-figure1,(ax1,ax2,ax3) = plt.subplots(3) # Plotting Gillespie ODE in figure 1:
-
-line1 = ax1.plot(t,S) # S
-line2 = ax2.plot(t,I) # I
-line3 = ax3.plot(t,R) # R
-
-ax1.set_ylabel("Susceptible")
-ax2.set_ylabel("Infected")
-ax3.set_ylabel("Recovered")
-ax3.set_xlabel("Time (arbitrary units)")
-plt.suptitle("Stochastic SIR Model")
+# Plotting Gillespie ODE in figure 1:
+plt.figure(1)
+plt.plot(t, S, label='Susceptible')
+plt.plot(t, I, label='Infectious')
+plt.plot(t, R, label='Recovered')
+plt.title("Stochastic Simulation of SIR Model")
+plt.xlabel('Time Steps')
+plt.ylabel('Average Number of Individuals')
+plt.legend()
 
     # Overlapping normal ODE and Gillespie algorithm ODE:
 
-figure2,(ax1,ax2,ax3) = plt.subplots(3)
+figure3,(ax1,ax2,ax3) = plt.subplots(3)
 
 # First plotting Gillespie ODE (again but now on figure 2):
 line1 = ax1.plot(t,S) # S
@@ -114,10 +100,6 @@ ax1.set_ylabel("Susceptible")
 ax2.set_ylabel("Infected")
 ax3.set_ylabel("Recovered")
 ax3.set_xlabel("Time Steps")
-ax1.legend(["Stochastic SIR","Deterministic SIR"],loc="upper right")
-plt.suptitle("Deterministic vs Stochastic SIR Model")
-
-plt.show()
 ax1.legend(["Stochastic SIR","Deterministic SIR"],loc="upper right")
 plt.suptitle("Deterministic vs Stochastic SIR Model")
 
